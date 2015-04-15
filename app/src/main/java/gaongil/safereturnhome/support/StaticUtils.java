@@ -31,24 +31,6 @@ import android.widget.Toast;
 
 public class StaticUtils {
 
-	// upload file to server
-	// http://stackoverflow.com/questions/11044291/using-httppost-to-upload-file-android
-	public static String postRequest(String url, List<NameValuePair> parameters)
-			throws ClientProtocolException, IOException {
-		HttpPost httppost = new HttpPost(Constant.NETWORK_ROOT_PATH + url);
-
-		if (parameters != null)
-			httppost.setEntity(new UrlEncodedFormEntity(parameters));
-
-		HttpResponse response = new DefaultHttpClient().execute(httppost);
-		HttpEntity entity = response.getEntity();
-
-		if (response != null && entity != null)
-			return EntityUtils.toString(entity);
-		else
-			return null;
-	}
-
 	public static void centerToast(Context context, String message) {
 		Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 		toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL,
@@ -69,24 +51,8 @@ public class StaticUtils {
 		return false;
 	}
 
-	/**
-	 * Scales the provided bitmap to have the height and width provided.
-	 * (Alternative method for scaling bitmaps since
-	 * Bitmap.createScaledBitmap(...) produces bad (blocky) quality bitmaps.)
-	 * 
-	 * @param bitmap
-	 *            is the bitmap to scale.
-	 * @param newWidth
-	 *            is the desired width of the scaled bitmap.
-	 * @param newHeight
-	 *            is the desired height of the scaled bitmap.
-	 * @return the scaled bitmap.
-	 * @throws IOException
-	 * @throws FileNotFoundException
-	 */
 	public static Bitmap scaleBitmap(Context context, Uri ImageUri,
-			int newWidth, int newHeight) throws FileNotFoundException,
-			IOException {
+			int newWidth, int newHeight) throws IOException {
 
 		Bitmap bitmap = Images.Media.getBitmap(context.getContentResolver(),
 				ImageUri);
@@ -112,7 +78,8 @@ public class StaticUtils {
 	public static boolean isScreenOn(Context context) {
 		PowerManager pm = (PowerManager) context
 				.getSystemService(Context.POWER_SERVICE);
-		return pm.isInteractive();
+        return pm.isScreenOn();
+		//return pm.isInteractive();
 	}
 
 	/**

@@ -27,13 +27,13 @@ public class Constant {
     // Project number from the API Console
 	public static final String PROJECT_ID = "342931063456";
 	
-	//private static final String NETWORK_ROOT_PATH = "http://localhost:8080";
-	public static final String NETWORK_ROOT_PATH = "http://10.73.43.227:8080";
-
-	//private static final String NETWORK_ROOT_PATH = "http://localhost:8080";
-	public static final String MESSAGE_PLAY_SERVICES_ERROR = "This device is not supported.";
+	public static final String NETWORK_ROOT_PATH = "http://192.168.0.39:8080";
+	//public static final String NETWORK_ROOT_PATH = "http://10.73.43.227:8080";
 	public static final int  SPLASH_WAIT_TIME = 1000;
-	public static final float DRAWER_SLIDE_WIDTH_RATE = 0.8f;
+    //private static final String NETWORK_ROOT_PATH = "http://localhost:8080";
+
+    public static final String MESSAGE_PLAY_SERVICES_ERROR = "This device is not supported.";
+    public static final float DRAWER_SLIDE_WIDTH_RATE = 0.8f;
 	public static final String DATE_FORMAT = "a h:mm";
 	public static final int PROFILE_IMAGE_RATE_BY_DEVICE_WIDTH = 4;
 	public static final String PROFILE_IMAGE_NAME = "profile";

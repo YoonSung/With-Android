@@ -30,6 +30,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Locale;
 
 import gaongil.safereturnhome.R;
 import gaongil.safereturnhome.adapter.StatusSpinnerAdapter;
@@ -194,7 +195,7 @@ public class MainLeftDrawerFragment extends Fragment {
             hour -= 12;
         }
 
-        String displayTime = String.format("%s %02d:%02d", timezone, hour, minute);
+        String displayTime = String.format(Locale.KOREA, "%s %02d:%02d", timezone, hour, minute);
         mLeftDrawerAlarmButton.setText(displayTime);
 
         //update MainActivity Content

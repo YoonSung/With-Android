@@ -9,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/contact_checkbox"
-        android:layout_toRightOf="@+id/contactimage" >
+        android:layout_toLeftOf="@+id/contact_checkbox">
  
         <TextView
             android:id="@+id/contact_txt_name"

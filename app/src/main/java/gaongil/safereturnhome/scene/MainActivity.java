@@ -197,8 +197,8 @@ public class MainActivity extends FragmentActivity {
 
     @Background
     void test() {
-        boolean result = app.NETWORK.testRequest("test");
-        Log.i(Constant.TAG, "Network Request Result : "+result);
+        //boolean result = app.NETWORK.testRequest("test");
+        //Log.i(Constant.TAG, "Network Request Result : "+result);
 
         //call @UIThread method if you manupulate ui component and interaction
     }
