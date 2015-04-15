@@ -2,11 +2,12 @@ package gaongil.safereturnhome.scene;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -26,11 +27,14 @@ import java.io.IOException;
 
 import gaongil.safereturnhome.R;
 import gaongil.safereturnhome.WithApp;
+import gaongil.safereturnhome.exception.NetworkRequestFailureException;
 import gaongil.safereturnhome.model.ResponseMessage;
 import gaongil.safereturnhome.support.Constant;
 import gaongil.safereturnhome.support.PreferenceUtil_;
+import gaongil.safereturnhome.support.StaticUtils;
 
 @EActivity(R.layout.activity_splash)
+//TODO 네트워크 연결여부 확인
 public class SplashScreen extends Activity {
 
     private static final String TAG = SplashScreen.class.getName();
@@ -40,17 +44,13 @@ public class SplashScreen extends Activity {
 
     @Pref
     PreferenceUtil_ preferenceUtil;
-	private GoogleCloudMessaging gcm;
 
 	/** Check if the app is running. */
 	private boolean isRunning;
 
-	// You need to do the Play Services APK check here too.
 	@Override
 	protected void onResume() {
         super.onResume();
-        // Check device for Play Services APK.
-        checkPlayServices();
 	}
 
     @Override
@@ -70,7 +70,6 @@ public class SplashScreen extends Activity {
 		// Check device for Play Services APK. If check succeeds, proceed with GCM registration.
         // Otherwise, prompt user to get valid Play Services APK.
         if (checkPlayServices()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
             String regId = preferenceUtil.registrationId().get();
 
             Log.d(TAG, "regId : "+regId);
@@ -89,7 +88,7 @@ public class SplashScreen extends Activity {
             startSplash();
 
         } else {
-            //TODO Alert to user
+            StaticUtils.centerToast(this, getResources().getString(R.string.alert_google_service_not_available));
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
 	}
@@ -109,6 +108,7 @@ public class SplashScreen extends Activity {
             deviceWidth = display.getWidth();
         }
 
+        //Save Profile Size With device's 1/4 rate
         preferenceUtil.profileSize().put(deviceWidth / Constant.PROFILE_IMAGE_RATE_BY_DEVICE_WIDTH);
 	}
 
@@ -133,53 +133,56 @@ public class SplashScreen extends Activity {
 	}
 
     /**
-     * Sends the registration ID to your server over HTTP, so it can use GCM/HTTP or CCS to send
-     * messages to your app. Not needed for this demo since the device sends upstream messages
-     * to a server that echoes back the message using the 'from' address in the message.
-     */
-    private void sendRegistrationIdToBackend(final String regId) {
-
-        ResponseMessage response = app.NETWORK.sendRegId(regId);
-        boolean result = (boolean) response.getData();
-        Log.d(TAG, "response result : "+response.toString());
-    }
-
-    /**
-     * Registers the application with GCM servers asynchronously.
-     * Stores the registration ID and the app versionCode in the application's
-     * shared preferences.
+     * You should send the registration ID to your server over HTTP, so it
+     * can use GCM/HTTP or CCS to send messages to your app.
      */
     @Background
     public void registerInBackground() {
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(SplashScreen.this);
+        String regId = null;
+
         try {
-            if (gcm == null) {
-                gcm = GoogleCloudMessaging.getInstance(SplashScreen.this);
-            }
-            String regId = gcm.register(Constant.PROJECT_ID);
-            Log.d(TAG, "Device registered, registration ID=" + regId);
+            regId = gcm.register(Constant.PROJECT_ID);
 
-            //TODO 네트워크 통신, 휴대전화번호에 해당하는 데이터가 존재할 경우, 해당 regId를 반환
+        } catch (IOException e) {
+            e.printStackTrace();
+            StaticUtils.centerToast(this, getResources().getString(R.string.alert_gcm_register_fail));
+            finish();
+        }
 
-            // You should send the registration ID to your server over HTTP, so it
-            // can use GCM/HTTP or CCS to send messages to your app.
+        Log.d(TAG, "Device registered, registration ID=" + regId);
 
-            //TODO 서버에 등록이 성공하면, local 데이터로 regId를 저장
-            sendRegistrationIdToBackend(regId);
+        //TODO 휴대전화번호가 존재하지 않는 경우에 대한 처리
+        String phoneNumber = getPhoneNumber();
 
-            // Persist the regID - no need to register again.
+        try {
+            //네트워크 통신, 휴대전화번호에 해당하는 데이터가 존재할 경우, 새로 업로드하는 regId를 서버에 저장
+            sendRegIdAndPhoneNumber(regId, phoneNumber);
 
-            //TODO DELETE
-            //common.storeRegistrationId(regId);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Log.d(TAG, "Error :" + ex.getMessage());
-            // If there is an error, don't just keep trying to register.
-            // Require the user to click a button again, or perform
-            // exponential back-off.
+        } catch (NetworkRequestFailureException e) {
+            e.printStackTrace();
+            StaticUtils.centerToast(this, e.getMessage());
+            finish();
+        }
+
+        //서버에 등록이 성공하면, local 데이터로 regId를 저장
+        preferenceUtil.registrationId().put(regId);
+    }
+
+    private void sendRegIdAndPhoneNumber(String regId, String phoneNumber) throws NetworkRequestFailureException {
+        ResponseMessage responseMessage = app.NETWORK.sendRegIdAndPhoneNumber(regId, phoneNumber);
+
+        if (responseMessage.getCode() != Constant.NETWORK_RESPONSE_CODE_CREATION_NEW_DATA) {
+            throw new NetworkRequestFailureException();
         }
     }
 
-	private void startSplash() {
+    private String getPhoneNumber() {
+        TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getLine1Number();
+    }
+
+    private void startSplash() {
 
 		new Thread(new Runnable() {
 			@Override
@@ -204,29 +207,29 @@ public class SplashScreen extends Activity {
 		}).start();
 	}
 
-	/**
-	 * If the app is still running than this method will start the Login activity
-	 * and finish the Splash.
-	 */
-	private synchronized void doFinish() {
+    /**
+     * If the app is still running than this method will start the Login activity
+     * and finish the Splash.
+     */
+    private synchronized void doFinish() {
 
-		if (isRunning) {
-			isRunning = false;
-			Intent i = new Intent(SplashScreen.this, MainActivity_.class);
-			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(i);
-			finish();
-		}
-	}
+        if (isRunning) {
+            isRunning = false;
+            Intent i = new Intent(SplashScreen.this, MainActivity_.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+        }
+    }
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			isRunning = false;
-			finish();
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            isRunning = false;
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

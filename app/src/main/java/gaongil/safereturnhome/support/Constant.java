@@ -5,15 +5,11 @@ public class Constant {
     public static final String TAG = "WITH_PROJECT";
 	
 	/********************************************************************************
-	 * 										Network Key
+	 * 								Network Response Code
 	 *********************************************************************************/
-	public static final String NETWORK_PARAM_KEY_REGID = "regId";
-	
-	/********************************************************************************
-	 * 										Request URL
-	 *********************************************************************************/
-	public static final String NETWORK_URL_REGISTER_ID = "/user";
-	
+    public static final int NETWORK_RESPONSE_CODE_CREATION_NEW_DATA = 201;
+
+
 	/********************************************************************************
 	 * 										Intent Key
 	 *********************************************************************************/

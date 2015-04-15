@@ -7,9 +7,7 @@ import retrofit.http.POST;
 import retrofit.http.Path;
 
 public interface WithNetwork {
-    @GET("/test/{user}")
-    ResponseMessage testRequest(@Path("user") String user);
 
     @POST("/user")
-    ResponseMessage sendRegId(@Body String regId);
+    ResponseMessage sendRegIdAndPhoneNumber(@Body String regId, @Body String phoneNumber);
 }

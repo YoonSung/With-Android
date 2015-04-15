@@ -1,18 +1,5 @@
 package gaongil.safereturnhome.support;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -28,6 +15,8 @@ import android.os.PowerManager;
 import android.provider.MediaStore.Images;
 import android.view.Gravity;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 public class StaticUtils {
 
