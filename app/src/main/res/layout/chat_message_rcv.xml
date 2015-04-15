@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="right">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/pad_15dp"
+        android:layout_marginRight="@dimen/pad_20dp" >
+
+        <ImageView
+            android:id="@+id/message_img_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/test_chat_user2" />
+
+        <LinearLayout
+            android:id="@+id/message_linearlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/message_img_profile"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/pad_chat_item"
+            android:background="@drawable/chat_blue_bubble"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/pad_5dp"
+            android:paddingRight="@dimen/pad_chat_item"
+            android:paddingTop="@dimen/pad_5dp" >
+
+            <TextView
+                android:id="@+id/message_content"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/txt_13sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/message_linearlayout"
+            android:layout_marginBottom="@dimen/pad_2dp"
+            android:layout_marginLeft="@dimen/pad_30dp"
+            android:layout_toLeftOf="@+id/message_linearlayout"
+            android:paddingRight="@dimen/pad_2dp"
+            android:textColor="@color/main_color_gray"
+            android:textStyle="bold"
+            android:textSize="@dimen/txt_12sp" />
+    </RelativeLayout>
+
+</LinearLayout>

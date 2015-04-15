@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:onClick="tempEventHandler"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/pad_30dp" >
+
+    <LinearLayout
+        android:id="@+id/group_linear_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/shape_round_linearlayout_white"
+        android:paddingBottom="@dimen/pad_20dp"
+        android:paddingLeft="@dimen/pad_10dp"
+        android:paddingRight="@dimen/pad_10dp"
+        android:paddingTop="@dimen/pad_10dp" >
+
+        <TextView
+            android:id="@+id/group_txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BF"
+            android:textColor="@color/black"
+            android:textSize="@dimen/txt_16sp"
+            android:textStyle="bold"
+            tools:ignore="InefficientWeight" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/group_linearlayout_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/group_linear_name"
+        android:layout_marginTop="@dimen/pad_minus_20dp"
+        android:background="@drawable/shape_round_linearlayout_white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/pad_20dp"
+        android:paddingTop="@dimen/pad_30dp" >
+
+        <include 
+            android:id="@+id/main_group_testuser_1"
+            layout="@layout/main_group_user" />
+
+        <include 
+            android:id="@+id/main_group_testuser_2"
+            layout="@layout/main_group_user" />
+        
+        <include 
+            android:id="@+id/main_group_testuser_3"
+            layout="@layout/main_group_user" />
+        
+        <include 
+            android:id="@+id/main_group_testuser_4"
+            layout="@layout/main_group_user" />
+        
+        <include 
+            android:id="@+id/main_group_testuser_5"
+            layout="@layout/main_group_user" />
+        
+    </LinearLayout>
+
+</RelativeLayout>

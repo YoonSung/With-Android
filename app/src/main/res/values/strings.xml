@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">위드</string>
+    <string name="app_name_en">WITH</string>
+    <string name="splash_txt_onelinedescription">Take my hand,\nI\'ll always be together</string>
+    <string name="service_name">안심귀가</string>
+    <string name="toggle_main_action_right">menu</string>
+    <string name="toggle_contact_action_right">apply</string>
+    <string name="plus">+</string>
+    <string name="chat_submit">전송</string>
+    <string name="contact_edt_searchhint">검색</string>
+    
+    <string name="crop__saving">Saving picture…</string>
+    <string name="crop__wait">Please wait…</string>
+    <string name="crop__pick_error">No image sources available</string>
+    <string name="crop__done">DONE</string>
+    <string name="crop__cancel">CANCEL</string>
+    
+    <string name="main_user_txt_currentstatus">현재상태 :</string>
+    <string name="main_user_txt_returnhome_time">귀가시간 :</string>
+    
+    <string name="drawer_main_left_user_title">사용자 설정</string>
+    <string name="drawer_main_left_user_txt_join">회원가입</string>
+    <string name="drawer_main_left_user_txt_status">현재상태</string>
+    <string name="drawer_main_left_user_txt_alarm">귀가시간</string>
+    <string name="drawer_main_left_user_txt_safetyzone">안전지역</string>
+	<string name="drawer_main_left_user_btn_alarm_default">미설정</string>
+    
+	<string name="drawer_main_left_with_title">위드</string>
+	<string name="drawer_main_left_with_txt_propose">함께 만들기</string>
+	<string name="drawer_main_left_with_txt_share">친구들과 함께하기</string>
+	<string name="drawer_main_left_with_txt_manual">같이하는 방법 알아보기</string>
+	<string name="drawer_main_right_txt_timeline_title">Time Line</string>
+	
+	<string name="drawer_chat_left_txt_returnhome_currentlocation">현위치</string>
+	<string name="drawer_chat_right_txt_returnhome_friends">나와 함께하는 친구들</string>
+	<string name="drawer_chat_right_txt_returnhome_ask_friends">친구들 조르기</string>
+	<string name="drawer_chat_right_txt_request_call">전화 </string>
+	<string name="drawer_chat_right_txt_request_walktogether">동행</string>
+	<string name="drawer_chat_right_txt_request_info">주변정보</string>
+	<string name="drawer_chat_right_txt_request_poking">콕!!!!찔러보기</string>
+	
+	
+	<string name="group_txt_title">그룹추가</string>
+	<string name="group_txt_groupname">그룹명</string>
+	<string name="group_txt_groupmember">그룹원</string>
+	<string name="group_txt_share">공유설정</string>
+	<string name="group_txt_share_location">위치정보</string>
+	<string name="group_txt_share_sensor">센서정보</string>
+	<string name="group_txt_share_on">ON</string>
+	<string name="group_txt_share_off">OFF</string>
+	<string name="group_btn_create">생성</string>
+	<string name="group_btn_cancle">취소</string>
+	
+	<string name="status_bad">나쁨</string>
+	<string name="status_flat">무표정</string>
+	<string name="status_happy">행복함</string>
+	<string name="status_lovely">하트뿅뿅</string>
+	<string name="status_notgood">별로임</string>
+	<string name="status_puzzled">정신없음</string>
+	<string name="status_sad">슬픔</string>
+	<string name="status_smile">웃음</string>
+	<string name="status_speechless">고민있음</string>
+	<string name="status_surprise">놀람</string>
+	<string name="status_angry">화남</string>
+
+</resources>

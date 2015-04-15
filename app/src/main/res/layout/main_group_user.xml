@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/stroke_rect_maingray"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/pad_zero_point_1"
+    android:paddingTop="@dimen/pad_zero_point_1" >
+
+    <LinearLayout
+        android:id="@+id/group_user_linearlayout_statuscolor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_color_assist"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            tools:ignore="UselessLeaf" />
+
+        <ImageView
+            android:id="@+id/group_user_profile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:adjustViewBounds="true"
+            android:src="@drawable/test_profile" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/pad_2dp"
+            android:paddingLeft="@dimen/pad_10dp"
+            android:paddingRight="@dimen/pad_10dp"
+            android:paddingTop="@dimen/pad_5dp" >
+
+            <TextView
+                android:id="@+id/group_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_text_color"
+                android:textSize="@dimen/txt_18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/group_user_checkedtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/pad_2dp"
+                android:textColor="@color/main_color_gray"
+                android:textSize="@dimen/txt_12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4" >
+
+            <ImageView
+                android:id="@+id/group_user_emoticon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@color/white" />
+
+            <TextView
+                android:id="@+id/group_user_status"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="SAFE"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="8"
+        android:background="@drawable/shape_round_linearlayout_yellow"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/pad_10dp"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/pad_minus_20dp"
+                android:src="@drawable/ic_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/pad_10dp"
+                android:layout_marginLeft="@dimen/pad_minus_20dp"
+                android:layout_marginTop="@dimen/pad_10dp"
+                android:text="@string/group_txt_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/pad_30dp"
+            android:layout_marginRight="@dimen/pad_30dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_txt_groupname"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/group_edt_groupname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/pad_10dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_group_edittext"
+                android:textSize="@dimen/txt_16sp"
+                android:textColor="@color/main_color_gray"
+                android:inputType="text" >
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/pad_30dp"
+            android:layout_marginRight="@dimen/pad_30dp"
+            android:layout_marginTop="@dimen/pad_20dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_txt_groupmember"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/group_edt_display_groupmember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/pad_5dp"
+                android:background="@drawable/shape_group_edittext"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:editable="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:textColor="@color/main_color_gray"
+                android:textSize="@dimen/txt_15sp"
+                android:padding="@dimen/pad_5dp" />
+
+            <Button
+                android:id="@+id/group_btn_addmember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/pad_minus_2dp"
+                android:background="@drawable/shape_group_btn_add"
+                android:paddingBottom="@dimen/pad_minus_20dp"
+                android:paddingTop="@dimen/pad_minus_20dp"
+                android:text="+"
+                android:textColor="#916310"
+                android:textSize="@dimen/txt_30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/pad_30dp"
+            android:layout_marginRight="@dimen/pad_30dp"
+            android:layout_marginTop="@dimen/pad_20dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/group_txt_share"
+                android:textColor="@color/black"
+                android:textSize="@dimen/txt_18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/pad_10dp"
+                android:gravity="center" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_group_round_button"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/pad_5dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/pad_minus_2dp"
+                        android:text="@string/group_txt_share_location"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/txt_14sp" />
+
+                    <Button
+                        android:id="@+id/group_btn_location_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/pad_5dp"
+                        android:background="@drawable/shape_group_btn_share_on"
+                        android:text="@string/group_txt_share_on"
+                        android:textSize="@dimen/txt_16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/pad_15dp"
+                    android:background="@drawable/shape_group_round_button"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="@dimen/pad_5dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/pad_minus_2dp"
+                        android:text="@string/group_txt_share_sensor"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/txt_14sp" />
+
+                    <Button
+                        android:id="@+id/group_btn_sensor_share"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/pad_5dp"
+                        android:background="@drawable/shape_group_btn_share_off"
+                        android:text="@string/group_txt_share_off"
+                        android:textSize="@dimen/txt_16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/pad_15dp"
+            android:gravity="center"
+            android:padding="@dimen/pad_5dp" >
+
+            <Button
+                android:id="@+id/group_btn_create"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/shape_round_linearlayout_white"
+                android:padding="@dimen/pad_7dp"
+                android:text="@string/group_btn_create"
+                android:textColor="@color/main_color_gray" />
+
+            <Button
+                android:id="@+id/group_btn_cancle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/pad_2dp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_round_linearlayout_white"
+                android:padding="@dimen/pad_7dp"
+                android:text="@string/group_btn_cancle"
+                android:textColor="@color/main_color_gray" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+</LinearLayout>

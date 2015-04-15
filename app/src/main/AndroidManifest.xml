@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="gaongil.safereturnhome"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <!-- permission so the Android application can register and receive messages. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- permission so the Android application can send the registration ID to the 3rd party server. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- permission as GCM requires a Google account (necessary only if if the device is running a version lower than Android 4.0.4) -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <!-- permission so the application can keep the processor from sleeping when a message is received. Optional—use only if the app wants to keep the device from sleeping. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- permission to prevent other Android applications from registering and receiving the Android application's messages. The permission name must exactly match this pattern—otherwise the Android application will not receive the messages. -->
+    <permission
+        android:name="gaongil.safereturnhome.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="gaongil.safereturnhome.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_logo"
+        android:theme="@style/CustomTheme"
+        android:name=".WithApp_"
+        android:label="@string/app_name" >
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".scene.SplashScreen_"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".scene.MainActivity_"
+            android:label="@null"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".scene.ChatActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity android:name=".scene.ContactsActivity_" >
+        </activity>
+        <activity
+            android:name=".scene.GroupActivity_"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            >
+        </activity>
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+
+
+        <!--
+		The receiver should require the com.google.android.c2dm.SEND permission, 
+		so that only the GCM Framework can send a message to it. 
+		If your app uses an IntentService (not required, but a common pattern), 
+		this receiver should be an instance of WakefulBroadcastReceiver. 
+		A WakefulBroadcastReceiver takes care of creating and managing a partial 
+		wake lock for your app.
+        -->
+        <receiver
+            android:name=".gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="gaongil.safereturnhome" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".gcm.GcmIntentService" />
+    </application>
+
+</manifest>

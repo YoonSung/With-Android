@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/pad_10dp" >
+
+    <ImageView
+        android:id="@+id/drawer_main_right_img_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/pad_15dp"
+        android:src="@drawable/test_chat_user2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/drawer_main_right_txt_receivedtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/pad_7dp"
+            android:text="PM 01:30"
+            android:textSize="@dimen/txt_15sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="> "
+                android:textStyle="bold"
+                android:textSize="@dimen/txt_14sp" />
+
+            <TextView
+                android:id="@+id/drawer_main_right_txt_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="2"
+                android:text="테스트메세지입니다.테스트메세지입니다.테스트메세지입니다.테스트메세지입니다."
+                android:textSize="@dimen/txt_14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

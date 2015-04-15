@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_chat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/chat_content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/skin_light" />
+
+            <ListView
+                android:id="@+id/chat_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/white_smoke"
+                android:divider="@color/transparent"
+                android:dividerHeight="@dimen/pad_20dp"
+                android:listSelector="@android:color/transparent"
+                android:scrollbars="none"
+                android:fastScrollEnabled="true" />
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/compose_view" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/chat_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:minHeight="?attr/actionBarSize"
+                android:background="@color/actionbar_background"
+                android:alpha="0.99">
+
+                <ImageButton
+                    android:id="@+id/chat_toolbar_left_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:src="@drawable/ic_location"
+                    android:background="@null" />
+
+                <TextView
+                    android:id="@+id/chat_toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/txt_15sp"
+                    android:textColor="@color/text_gray"
+                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxEms="13"
+                    android:singleLine="true"
+                    />
+
+                <ImageButton
+                    android:id="@+id/chat_toolbar_right_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:src="@drawable/ic_with"
+                    android:background="@null" />
+
+            </android.support.v7.widget.Toolbar>
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/drawer_chat_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="start"/>
+
+        <LinearLayout
+            android:id="@+id/drawer_chat_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="end"/>
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>
