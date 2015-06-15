@@ -34,8 +34,7 @@ import gaongil.safereturnhome.model.MessageType;
 @EActivity(R.layout.activity_chat)
 public class ChatActivity extends FragmentActivity {
 
-    /**
-     * *********************************************************************
+    /***********************************************************************
      * Forground Check
      */
     private static boolean VISIBILITY = false;

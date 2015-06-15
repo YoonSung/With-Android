@@ -44,7 +44,6 @@ import gaongil.safereturnhome.fragment.*;
 @WindowFeature({Window.FEATURE_NO_TITLE})
 public class MainActivity extends FragmentActivity {
 
-
     @Bean
     OttoBus bus;
 
