@@ -1,4 +1,4 @@
-package gaongil.safereturnhome.gcm;
+package gaongil.safereturnhome.gcm_old;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

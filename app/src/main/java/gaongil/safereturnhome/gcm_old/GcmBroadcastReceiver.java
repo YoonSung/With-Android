@@ -1,4 +1,4 @@
-package gaongil.safereturnhome.gcm;
+package gaongil.safereturnhome.gcm_old;
 
 import android.app.Activity;
 import android.content.ComponentName;

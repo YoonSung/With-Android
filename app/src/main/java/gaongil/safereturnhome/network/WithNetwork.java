@@ -4,10 +4,14 @@ import gaongil.safereturnhome.model.ResponseMessage;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 
 public interface WithNetwork {
 
     @POST("/user")
     ResponseMessage sendRegIdAndPhoneNumber(@Body String regId, @Body String phoneNumber);
+
+    @PUT("/user/token")
+    ResponseMessage updateRegId(String prevToken, String updatedToken);
 }

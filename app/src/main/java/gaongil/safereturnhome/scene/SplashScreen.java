@@ -16,11 +16,13 @@ import android.view.WindowManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import gaongil.safereturnhome.R;
 import gaongil.safereturnhome.WithApp;
 import gaongil.safereturnhome.exception.NetworkRequestFailureException;
+import gaongil.safereturnhome.exception.WithNotFoundException;
 import gaongil.safereturnhome.model.ResponseMessage;
 import gaongil.safereturnhome.support.Constant;
 import gaongil.safereturnhome.support.PreferenceUtil_;
@@ -59,41 +62,93 @@ public class SplashScreen extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         super.onCreate(savedInstanceState);
+
     }
 
     @AfterViews
 	void init() {
-		checkEssentialInfomation();
-	}
-
-	private void checkEssentialInfomation() {
-		// Check device for Play Services APK. If check succeeds, proceed with GCM registration.
+        // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
         // Otherwise, prompt user to get valid Play Services APK.
-        if (checkPlayServices()) {
-            String regId = preferenceUtil.registrationId().get();
+        checkPlayServices();
 
-            Log.d(TAG, "regId : "+regId);
-
-            if (regId == null || regId.isEmpty()) {
-                registerInBackground();
-            }
-
-            int profileImageSize = preferenceUtil.profileSize().get();
-
-            if (profileImageSize == 0) {
-            	saveProfileImageWidth();
-            }
-
-            isRunning = true;
+        String authToken = getAuthToken();
+        if (authToken != null)
             startSplash();
-
-        } else {
-            StaticUtils.centerToast(this, getResources().getString(R.string.alert_google_service_not_available));
-            Log.i(TAG, "No valid Google Play Services APK found.");
-        }
+        else
+            register();
 	}
 
-	@SuppressLint("NewApi")
+	private void register() {
+
+        try {
+
+            String phoneNumber = getPhoneNumber();
+            String regId = StaticUtils.getToken(this);
+
+            //1. Phone Number Check
+            if (!isValidPhoneNumber(phoneNumber))
+                centerToastAndFinish(getString(R.string.alert_absent_phone_number));
+
+            //2. RegstrationId Check
+            if (isSendTokenToServer() == false)
+                registerInBackground(phoneNumber, regId);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            centerToastAndFinish(getResources().getString(R.string.alert_gcm_register_fail));
+
+        } catch (WithNotFoundException e) {
+            e.printStackTrace();
+            centerToastAndFinish(e.getMessage());
+        }
+
+        if (isProfileImageSizeExist() == false)
+            saveProfileImageWidth();
+
+        startSplash();
+	}
+
+    /**
+     * send the registration ID to server over HTTP, so it
+     * can use GCM/HTTP or CCS to send messages to app.
+     */
+    @Background
+    public void registerInBackground(String phoneNumber, String regId) {
+
+        try {
+            //네트워크 통신, 휴대전화번호에 해당하는 데이터가 존재할 경우, 새로 업로드하는 regId를 서버에 저장
+            sendRegIdAndPhoneNumberToServer(regId, phoneNumber);
+
+            //서버에 등록이 성공하면, local 데이터로 regId를 저장
+            preferenceUtil.registrationId().put(regId);
+
+        } catch (Exception e) {
+            preferenceUtil.sendTokenToServer().put(false);
+            e.printStackTrace();
+            centerToastAndFinish(e.getMessage());
+
+        }
+    }
+
+    private String getAuthToken() {
+        return preferenceUtil.authToken().get();
+    }
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        if (!phoneNumber.startsWith("010"))
+            return false;
+
+        if (phoneNumber.length() != 11)
+            return false;
+
+        return true;
+    }
+
+    private boolean isSendTokenToServer() {
+        return preferenceUtil.sendTokenToServer().get();
+    }
+
+    @SuppressLint("NewApi")
     private void saveProfileImageWidth() {
 		Display display = getWindowManager().getDefaultDisplay();
 
@@ -103,8 +158,7 @@ public class SplashScreen extends Activity {
             Point size = new Point();
             display.getSize(size);
             deviceWidth = size.x;
-        }
-        else{
+        } else {
             deviceWidth = display.getWidth();
         }
 
@@ -132,58 +186,46 @@ public class SplashScreen extends Activity {
 	    return true;
 	}
 
-    /**
-     * You should send the registration ID to your server over HTTP, so it
-     * can use GCM/HTTP or CCS to send messages to your app.
-     */
-    @Background
-    public void registerInBackground() {
-        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(SplashScreen.this);
-        String regId = null;
 
-        try {
-            regId = gcm.register(Constant.PROJECT_ID);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            StaticUtils.centerToast(this, getResources().getString(R.string.alert_gcm_register_fail));
-            finish();
-        }
-
-        Log.d(TAG, "Device registered, registration ID=" + regId);
-
-        //TODO 휴대전화번호가 존재하지 않는 경우에 대한 처리
-        String phoneNumber = getPhoneNumber();
-
-        try {
-            //네트워크 통신, 휴대전화번호에 해당하는 데이터가 존재할 경우, 새로 업로드하는 regId를 서버에 저장
-            sendRegIdAndPhoneNumber(regId, phoneNumber);
-
-        } catch (NetworkRequestFailureException e) {
-            e.printStackTrace();
-            StaticUtils.centerToast(this, e.getMessage());
-            finish();
-        }
-
-        //서버에 등록이 성공하면, local 데이터로 regId를 저장
-        preferenceUtil.registrationId().put(regId);
+    @UiThread
+    public void centerToast(String message) {
+        StaticUtils.centerToast(this, message);
     }
 
-    private void sendRegIdAndPhoneNumber(String regId, String phoneNumber) throws NetworkRequestFailureException {
+
+    @UiThread
+    public void centerToastAndFinish(String message) {
+        centerToast(message);
+        this.finish();
+    }
+
+    private void sendRegIdAndPhoneNumberToServer(String regId, String phoneNumber) throws NetworkRequestFailureException {
         ResponseMessage responseMessage = app.NETWORK.sendRegIdAndPhoneNumber(regId, phoneNumber);
 
         if (responseMessage.getCode() != Constant.NETWORK_RESPONSE_CODE_CREATION_NEW_DATA) {
-            throw new NetworkRequestFailureException();
+            throw new NetworkRequestFailureException(responseMessage.getMessage());
         }
+
+        //Save authToken
+        preferenceUtil.sendTokenToServer().put(true);
     }
 
-    private String getPhoneNumber() {
+    private String getPhoneNumber() throws WithNotFoundException {
         TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        return telephonyManager.getLine1Number();
+        String number = telephonyManager.getLine1Number();
+
+        if (number.trim().replaceAll(" ", "").length() != 11)
+            throw new WithNotFoundException();
+
+        return number;
+    }
+
+    private boolean isProfileImageSizeExist() {
+        return preferenceUtil.profileSize().get() == 0 ? false : true;
     }
 
     private void startSplash() {
-
+        isRunning = true;
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

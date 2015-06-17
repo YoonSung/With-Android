@@ -62,6 +62,8 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
 
+
+
         <!--
 		The receiver should require the com.google.android.c2dm.SEND permission, 
 		so that only the GCM Framework can send a message to it. 
@@ -69,9 +71,11 @@
 		this receiver should be an instance of WakefulBroadcastReceiver. 
 		A WakefulBroadcastReceiver takes care of creating and managing a partial 
 		wake lock for your app.
-        -->
+
+
+        OLD GCM, TODO DELETE
         <receiver
-            android:name=".gcm.GcmBroadcastReceiver"
+            android:name=".gcm_old.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -80,7 +84,42 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".gcm.GcmIntentService" />
+        <service android:name=".gcm_old.GcmIntentService" />
+        -->
+
+        <!-- NEW GCM Code Start -->
+        <!-- [START gcm_receiver] -->
+        <!--TODO DELETE export declaration -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="gcm.play.android.samples.com.gcmquickstart" />
+            </intent-filter>
+        </receiver>
+        <!-- [END gcm_receiver] -->
+
+        <!-- [START gcm_listener] -->
+        <service
+            android:name=".gcm.GcmListener"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <!-- [END gcm_listener] -->
+        <!-- [START instanceId_listener] -->
+        <service
+            android:name=".gcm.TokenChangeListener"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+        <!-- [END instanceId_listener] -->
+        <!-- New GCM Code END -->
     </application>
 
 </manifest>

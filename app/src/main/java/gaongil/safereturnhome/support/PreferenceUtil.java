@@ -4,10 +4,14 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
 @SharedPref(value=SharedPref.Scope.UNIQUE)
 public interface PreferenceUtil {
-	
-    // Stores the registration ID and the app versionCode in the application's
+
+    //TODO DELETE ONE, BETWEEN TWO METHOD
+    // Stores the registration ID and Save Result that is sent to Server
     String registrationId();
-    int appVersion();
+    boolean sendTokenToServer();
+
+    //TODO move to database
+    String authToken();
 
     // Proper Profile Size to use custom image
     int profileSize();

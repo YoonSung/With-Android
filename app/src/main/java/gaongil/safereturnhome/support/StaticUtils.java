@@ -13,12 +13,18 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.PowerManager;
 import android.provider.MediaStore.Images;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
 public class StaticUtils {
+
+	private static String TAG = StaticUtils.class.getName();
 
 	public static void centerToast(Context context, String message) {
 		Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
@@ -83,5 +89,18 @@ public class StaticUtils {
 			// should never happen
 			throw new RuntimeException("Could not get package name: " + e);
 		}
+	}
+
+	public static String getToken(Context context) throws IOException {
+		// [START register_for_gcm]
+		// Initially this call goes out to the network to retrieve the token, subsequent calls
+		// are local.
+		// [START get_token]
+		InstanceID instanceID = InstanceID.getInstance(context);
+		String token = instanceID.getToken(Constant.PROJECT_ID, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+		// [END get_token]
+		Log.d(TAG, "GCM Registration Token: " + token);
+
+		return token;
 	}
 }
