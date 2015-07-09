@@ -7,11 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.androidannotations.annotations.EApplication;
-import org.json.JSONArray;
 
 import gaongil.safereturnhome.network.WithNetwork;
 import gaongil.safereturnhome.support.Constant;
@@ -44,7 +41,6 @@ public class WithApp extends Application {
                 .build();
 
         NETWORK = NETWORK_ADAPTER.create(WithNetwork.class);
-
 
         // Json Serializer
         objectMapper = new ObjectMapper();
