@@ -95,6 +95,12 @@ dependencies {
         exclude module: 'appcompat-v7'
     }
 
+    //Json Serializer
+    //TODO check Performance and Weight. (vs kryo, Boon, Gson etc)
+    compile 'com.fasterxml.jackson.core:jackson-annotations:+'
+    compile 'com.fasterxml.jackson.core:jackson-core:+'
+    compile 'com.fasterxml.jackson.core:jackson-databind:+'
+
     //Network
     compile 'com.squareup.retrofit:retrofit:1.9.0'
 
