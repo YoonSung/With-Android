@@ -23,6 +23,7 @@
 
     <uses-permission android:name="gaongil.safereturnhome.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.read_phone_state" />
     
     <application
@@ -112,7 +113,7 @@
         <!-- [END gcm_listener] -->
         <!-- [START instanceId_listener] -->
         <service
-            android:name=".gcm.TokenChangeListener"
+            android:name=".gcm.TokenChangeListener_"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID"/>
@@ -120,6 +121,11 @@
         </service>
         <!-- [END instanceId_listener] -->
         <!-- New GCM Code END -->
+
+        <service
+            android:name=".gcm.TokenProcessor_"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

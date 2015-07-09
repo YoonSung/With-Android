@@ -6,8 +6,6 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 public interface PreferenceUtil {
 
     //TODO DELETE ONE, BETWEEN TWO METHOD
-    // Stores the registration ID and Save Result that is sent to Server
-    String registrationId();
     boolean sendTokenToServer();
 
     //TODO move to database

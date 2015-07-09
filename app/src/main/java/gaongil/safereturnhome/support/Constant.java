@@ -46,4 +46,5 @@ public class Constant {
 
     public static final String OTTO_KEY_HOUR = "hour";
     public static final String OTTO_KEY_MINUTE = "minute";
+	public static final String BROADCAST_ACTION_TOKEN_GENERATE = "token.new";
 }

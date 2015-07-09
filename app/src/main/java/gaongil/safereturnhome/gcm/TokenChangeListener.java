@@ -16,6 +16,10 @@
 
 package gaongil.safereturnhome.gcm;
 
+import android.util.Log;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.google.android.gms.iid.InstanceIDListenerService;
 
 import org.androidannotations.annotations.App;
@@ -29,10 +33,11 @@ import gaongil.safereturnhome.exception.NetworkRequestFailureException;
 import gaongil.safereturnhome.model.ResponseMessage;
 import gaongil.safereturnhome.support.Constant;
 import gaongil.safereturnhome.support.PreferenceUtil_;
-import gaongil.safereturnhome.support.StaticUtils;
 
 @EService
 public class TokenChangeListener extends InstanceIDListenerService {
+
+    private final String TAG = TokenChangeListener.class.getName();
 
     @App
     WithApp app;
@@ -50,7 +55,7 @@ public class TokenChangeListener extends InstanceIDListenerService {
     public void onTokenRefresh() {
         // Fetch updated Instance ID token and notify our app's server of any changes (if applicable).
         try {
-            sendTokenToUpdate(StaticUtils.getToken(this));
+            sendTokenToUpdate();
         } catch (IOException e) {
             //TODO FAILOVER
             e.printStackTrace();
@@ -60,9 +65,17 @@ public class TokenChangeListener extends InstanceIDListenerService {
         }
     }
 
-    private void sendTokenToUpdate(String updatedToken) throws NetworkRequestFailureException {
-        String prevToken = preferenceUtil.registrationId().get();
-        ResponseMessage responseMessage = app.NETWORK.updateRegId(prevToken, updatedToken);
+    private void sendTokenToUpdate() throws NetworkRequestFailureException, IOException {
+        // [START register_for_gcm]
+        // Initially this call goes out to the network to retrieve the token, subsequent calls
+        // are local.
+        // [START get_token]
+        InstanceID instanceID = InstanceID.getInstance(getApplication());
+        String token = instanceID.getToken(Constant.PROJECT_ID, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+        // [END get_token]
+        Log.d(TAG, "GCM Registration Token: " + token);
+
+        ResponseMessage responseMessage = app.NETWORK.updateRegId(token);
 
         if (responseMessage.getCode() != Constant.NETWORK_RESPONSE_CODE_OK) {
             throw new NetworkRequestFailureException(responseMessage.getMessage());

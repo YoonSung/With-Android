@@ -2,8 +2,10 @@ package gaongil.safereturnhome.scene;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,23 +17,17 @@ import android.view.WindowManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.App;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import java.io.IOException;
+import java.util.UUID;
 
 import gaongil.safereturnhome.R;
-import gaongil.safereturnhome.WithApp;
-import gaongil.safereturnhome.exception.NetworkRequestFailureException;
 import gaongil.safereturnhome.exception.WithNotFoundException;
-import gaongil.safereturnhome.model.ResponseMessage;
+import gaongil.safereturnhome.gcm.TokenProcessor_;
 import gaongil.safereturnhome.support.Constant;
 import gaongil.safereturnhome.support.PreferenceUtil_;
 import gaongil.safereturnhome.support.StaticUtils;
@@ -40,10 +36,7 @@ import gaongil.safereturnhome.support.StaticUtils;
 //TODO 네트워크 연결여부 확인
 public class SplashScreen extends Activity {
 
-    private static final String TAG = SplashScreen.class.getName();
-
-    @App
-    WithApp app;
+    private static String TAG = SplashScreen.class.getName();
 
     @Pref
     PreferenceUtil_ preferenceUtil;
@@ -51,10 +44,18 @@ public class SplashScreen extends Activity {
 	/** Check if the app is running. */
 	private boolean isRunning;
 
+    private BroadcastReceiver completeTokenGenerationReceiver;
+
 	@Override
 	protected void onResume() {
         super.onResume();
 	}
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiverIfExist();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,6 @@ public class SplashScreen extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         super.onCreate(savedInstanceState);
-
     }
 
     @AfterViews
@@ -72,66 +72,79 @@ public class SplashScreen extends Activity {
         checkPlayServices();
 
         String authToken = getAuthToken();
-        if (authToken != null)
-            startSplash();
-        else
+        Log.d(TAG, "authToken -> " + authToken);
+
+        if (authToken == null)
             register();
-	}
+        else
+            startSplash();
+    }
+
+    private void registerReceiver() {
+
+        if(completeTokenGenerationReceiver != null)
+            return;
+
+        final IntentFilter theFilter = new IntentFilter();
+        theFilter.addAction(Constant.BROADCAST_ACTION_TOKEN_GENERATE);
+
+        this.completeTokenGenerationReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "onReceive Entrance");
+                if (!intent.getAction().equals(Constant.BROADCAST_ACTION_TOKEN_GENERATE))
+                    return;
+
+                if (isSendTokenToServer() == false) {
+                    centerToastAndFinish(getResources().getString(R.string.alert_gcm_register_fail));
+
+                } else {
+
+                    if (isProfileImageSizeExist() == false)
+                        saveProfileImageWidth();
+
+                    startSplash();
+                }
+            }
+        };
+
+        this.registerReceiver(this.completeTokenGenerationReceiver, theFilter);
+    }
+
+    private void unregisterReceiverIfExist() {
+        if(completeTokenGenerationReceiver != null)
+            this.unregisterReceiver(completeTokenGenerationReceiver);
+    }
 
 	private void register() {
 
         try {
 
             String phoneNumber = getPhoneNumber();
-            String regId = StaticUtils.getToken(this);
+            String uuid = UUID.randomUUID().toString();
+
+            Log.d(TAG, "phoneNumber -> "+phoneNumber);
+            Log.d(TAG, "uuid -> "+uuid);
 
             //1. Phone Number Check
             if (!isValidPhoneNumber(phoneNumber))
                 centerToastAndFinish(getString(R.string.alert_absent_phone_number));
 
-            //2. RegstrationId Check
-            if (isSendTokenToServer() == false)
-                registerInBackground(phoneNumber, regId);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            centerToastAndFinish(getResources().getString(R.string.alert_gcm_register_fail));
+            if (isSendTokenToServer() == false) {
+                registerReceiver();
+                TokenProcessor_.intent(getApplication())
+                        .registerUserToServer(phoneNumber, uuid)
+                        .start();
+            }
 
         } catch (WithNotFoundException e) {
             e.printStackTrace();
             centerToastAndFinish(e.getMessage());
         }
-
-        if (isProfileImageSizeExist() == false)
-            saveProfileImageWidth();
-
-        startSplash();
 	}
 
-    /**
-     * send the registration ID to server over HTTP, so it
-     * can use GCM/HTTP or CCS to send messages to app.
-     */
-    @Background
-    public void registerInBackground(String phoneNumber, String regId) {
-
-        try {
-            //네트워크 통신, 휴대전화번호에 해당하는 데이터가 존재할 경우, 새로 업로드하는 regId를 서버에 저장
-            sendRegIdAndPhoneNumberToServer(regId, phoneNumber);
-
-            //서버에 등록이 성공하면, local 데이터로 regId를 저장
-            preferenceUtil.registrationId().put(regId);
-
-        } catch (Exception e) {
-            preferenceUtil.sendTokenToServer().put(false);
-            e.printStackTrace();
-            centerToastAndFinish(e.getMessage());
-
-        }
-    }
-
     private String getAuthToken() {
-        return preferenceUtil.authToken().get();
+        return preferenceUtil.authToken().getOr(null);
     }
 
     private boolean isValidPhoneNumber(String phoneNumber) {
@@ -197,17 +210,6 @@ public class SplashScreen extends Activity {
     public void centerToastAndFinish(String message) {
         centerToast(message);
         this.finish();
-    }
-
-    private void sendRegIdAndPhoneNumberToServer(String regId, String phoneNumber) throws NetworkRequestFailureException {
-        ResponseMessage responseMessage = app.NETWORK.sendRegIdAndPhoneNumber(regId, phoneNumber);
-
-        if (responseMessage.getCode() != Constant.NETWORK_RESPONSE_CODE_CREATION_NEW_DATA) {
-            throw new NetworkRequestFailureException(responseMessage.getMessage());
-        }
-
-        //Save authToken
-        preferenceUtil.sendTokenToServer().put(true);
     }
 
     private String getPhoneNumber() throws WithNotFoundException {

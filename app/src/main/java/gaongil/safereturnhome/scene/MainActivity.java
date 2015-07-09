@@ -189,9 +189,7 @@ public class MainActivity extends FragmentActivity {
 
     @Click(R.id.main_btn_addgroup)
     void addGroup() {
-
-        //startActivity(new Intent(MainActivity.this, GroupActivity_.class));
-        test();
+        startActivity(new Intent(MainActivity.this, GroupActivity_.class));
     }
 
     @Background

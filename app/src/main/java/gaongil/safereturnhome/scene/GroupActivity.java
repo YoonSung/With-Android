@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.EditText;
 
+import org.androidannotations.annotations.App;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -11,11 +12,15 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 
 import gaongil.safereturnhome.R;
+import gaongil.safereturnhome.WithApp;
 import gaongil.safereturnhome.model.ContactInfo;
 import gaongil.safereturnhome.support.Constant;
 
 @EActivity(R.layout.activity_group)
 public class GroupActivity extends Activity {
+
+    @App
+    WithApp app;
 
     @ViewById(R.id.group_edt_display_groupmember)
     EditText edtDisplayMemberList;
@@ -43,7 +48,7 @@ public class GroupActivity extends Activity {
 
     @Click(R.id.group_btn_create)
     void createGroup() {
-        //TODO
+        app.NETWORK.createGroup();
     }
 
     @Click(R.id.group_btn_cancle)

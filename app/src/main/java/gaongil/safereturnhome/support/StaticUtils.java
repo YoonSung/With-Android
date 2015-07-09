@@ -1,6 +1,8 @@
 package gaongil.safereturnhome.support;
 
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
@@ -89,18 +91,5 @@ public class StaticUtils {
 			// should never happen
 			throw new RuntimeException("Could not get package name: " + e);
 		}
-	}
-
-	public static String getToken(Context context) throws IOException {
-		// [START register_for_gcm]
-		// Initially this call goes out to the network to retrieve the token, subsequent calls
-		// are local.
-		// [START get_token]
-		InstanceID instanceID = InstanceID.getInstance(context);
-		String token = instanceID.getToken(Constant.PROJECT_ID, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-		// [END get_token]
-		Log.d(TAG, "GCM Registration Token: " + token);
-
-		return token;
 	}
 }
