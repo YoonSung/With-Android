@@ -28,11 +28,28 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.EService;
+
+import gaongil.safereturnhome.WithApp;
+import gaongil.safereturnhome.dto.cloud.CloudMessage;
+import gaongil.safereturnhome.dto.cloud.Type1;
+import gaongil.safereturnhome.dto.cloud.Type2;
+import gaongil.safereturnhome.dto.cloud.Type3;
+import gaongil.safereturnhome.dto.cloud.Type4;
+import gaongil.safereturnhome.dto.cloud.executor.Type1Executor;
+import gaongil.safereturnhome.dto.cloud.executor.Type2Executor;
+import gaongil.safereturnhome.dto.cloud.executor.Type3Executor;
+import gaongil.safereturnhome.dto.cloud.executor.Type4Executor;
 import gaongil.safereturnhome.scene.MainActivity_;
 
+@EService
 public class GcmListener extends GcmListenerService {
 
     private final String TAG = GcmListener.class.getName();
+
+    @App
+    WithApp app;
 
     /**
      * Called when message is received.
@@ -47,8 +64,6 @@ public class GcmListener extends GcmListenerService {
         String message = data.getString("msg");
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
-
-
 
         /**
          * Production applications would usually process the message here.
