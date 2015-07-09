@@ -32,7 +32,7 @@ import gaongil.safereturnhome.scene.MainActivity_;
 
 public class GcmListener extends GcmListenerService {
 
-    private static final String TAG = GcmListener.class.getName();
+    private final String TAG = GcmListener.class.getName();
 
     /**
      * Called when message is received.

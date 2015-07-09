@@ -18,6 +18,9 @@ public class User extends BaseDaoEnabled<User, Integer> {
 	
 	@DatabaseField
 	private String nickname;
+
+	@DatabaseField
+	private String phoneNumber;
 	
 	//It's for ORMLite
 	public User(){}
@@ -59,4 +62,8 @@ public class User extends BaseDaoEnabled<User, Integer> {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	};
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 }
