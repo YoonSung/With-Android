@@ -20,7 +20,7 @@ import retrofit.RestAdapter;
 public class WithApp extends Application {
 
     public static WithNetwork NETWORK;
-    public static ObjectMapper JSONParser;
+    public static ObjectMapper ObjectMapper;
 
     @Override
     public void onCreate() {
@@ -43,12 +43,12 @@ public class WithApp extends Application {
         NETWORK = NETWORK_ADAPTER.create(WithNetwork.class);
 
         // Json Serializer
-        JSONParser = new ObjectMapper();
-        JSONParser.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        JSONParser.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        ObjectMapper = new ObjectMapper();
+        ObjectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        ObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
-        JSONParser.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        JSONParser.getSerializationConfig().getDefaultVisibilityChecker()
+        ObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        ObjectMapper.getSerializationConfig().getDefaultVisibilityChecker()
                 .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
                 .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)

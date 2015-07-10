@@ -1,7 +1,9 @@
 package gaongil.safereturnhome.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
- * Created by yoon on 15. 7. 9..
+ * Created by yoon on 15. 7. 1..
  */
 public class UserDTO {
 
@@ -17,6 +19,7 @@ public class UserDTO {
 
     private String uuid;
 
+    @JsonIgnore
     public boolean isValidPhoneNumber() {
 
         if (this.phoneNumber == null)

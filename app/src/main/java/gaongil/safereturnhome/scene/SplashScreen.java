@@ -130,6 +130,7 @@ public class SplashScreen extends Activity {
             if (!isValidPhoneNumber(phoneNumber))
                 centerToastAndFinish(getString(R.string.alert_absent_phone_number));
 
+            //TODO Refactoring.
             if (isSendTokenToServer() == false) {
                 registerReceiver();
                 TokenProcessor_.intent(getApplication())
