@@ -41,24 +41,10 @@ public class TokenProcessor extends AbstractIntentService {
     public TokenProcessor() {
         super("EMPTY");
     }
-    /**
-     * send the registration ID to server over HTTP, so it
-     * can use GCM/HTTP or CCS to send messages to app.
-     */
-    public void registerInBackground(String phoneNumber, String regId, String uuid) {
-        //네트워크 통신, 휴대전화번호에 해당하는 데이터가 존재할 경우, 새로 업로드하는 regId를 서버에 저장
 
-        UserDTO dto = new UserDTO();
-        dto.setPhoneNumber(phoneNumber);
-        dto.setRegId(regId);
-        dto.setUuid(uuid);
+    private void sendRegIdAndPhoneNumberToServer(String phoneNumber, String regId, String uuid) {
 
-        sendRegIdAndPhoneNumberToServer(dto);
-    }
-
-    private void sendRegIdAndPhoneNumberToServer(UserDTO dto) {
-
-        app.NETWORK.sendRegIdAndPhoneNumber(dto, new Callback<ResponseMessage>() {
+        app.NETWORK.sendRegIdAndPhoneNumber(phoneNumber, regId, uuid, new Callback<ResponseMessage>() {
             @Override
             public void success(ResponseMessage responseMessage, Response response) {
                 Log.d(TAG, "responseMessage : " + responseMessage.toString());
@@ -141,7 +127,7 @@ public class TokenProcessor extends AbstractIntentService {
             String token = instanceID.getToken(Constant.PROJECT_ID, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             Log.d(TAG, "GCM Registration Token: " + token);
 
-            registerInBackground(phoneNumber, token, uuid);
+            sendRegIdAndPhoneNumberToServer(phoneNumber, token, uuid);
 
             preferenceUtil.sendTokenToServer().put(true);
 

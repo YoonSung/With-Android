@@ -7,17 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class UserDTO {
 
-    private Long id;
-
     private String phoneNumber;
 
     private String nickname;
 
     private String imagePath;
-
-    private String regId;
-
-    private String uuid;
 
     @JsonIgnore
     public boolean isValidPhoneNumber() {
@@ -33,14 +27,6 @@ public class UserDTO {
 
         return true;
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getPhoneNumber() {
@@ -65,33 +51,5 @@ public class UserDTO {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
-    }
-
-    public String getRegId() {
-        return regId;
-    }
-
-    public void setRegId(String regId) {
-        this.regId = regId;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", imagePath='" + imagePath + '\'' +
-                ", regId='" + regId + '\'' +
-                ", uuid='" + uuid + '\'' +
-                '}';
     }
 }

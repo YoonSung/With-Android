@@ -65,6 +65,7 @@ public class TokenChangeListener extends InstanceIDListenerService {
         }
     }
 
+    // TODO
     private void sendTokenToUpdate() throws NetworkRequestFailureException, IOException {
         // [START register_for_gcm]
         // Initially this call goes out to the network to retrieve the token, subsequent calls
@@ -75,11 +76,12 @@ public class TokenChangeListener extends InstanceIDListenerService {
         // [END get_token]
         Log.d(TAG, "GCM Registration Token: " + token);
 
-        ResponseMessage responseMessage = app.NETWORK.updateRegId(token);
-
+        //ResponseMessage responseMessage = app.NETWORK.updateRegId(token);
+        /*
         if (responseMessage.getCode() != Constant.NETWORK_RESPONSE_CODE_OK) {
             throw new NetworkRequestFailureException(responseMessage.getMessage());
         }
+        */
     }
 
     // [END refresh_token]

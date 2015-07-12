@@ -48,7 +48,7 @@ public class GroupActivity extends Activity {
 
     @Click(R.id.group_btn_create)
     void createGroup() {
-        app.NETWORK.createGroup();
+        //app.NETWORK.createGroup();
     }
 
     @Click(R.id.group_btn_cancle)
