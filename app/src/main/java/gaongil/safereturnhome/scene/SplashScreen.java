@@ -122,7 +122,7 @@ public class SplashScreen extends Activity {
         try {
 
             String phoneNumber = getPhoneNumber();
-            String uuid = UUID.randomUUID().toString();
+            String uuid = getUuid();
 
             Log.d(TAG, "phoneNumber -> "+phoneNumber);
             Log.d(TAG, "uuid -> "+uuid);
@@ -220,6 +220,11 @@ public class SplashScreen extends Activity {
             throw new WithNotFoundException();
 
         return number;
+    }
+
+    private String getUuid() {
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
     }
 
     private boolean isProfileImageSizeExist() {
