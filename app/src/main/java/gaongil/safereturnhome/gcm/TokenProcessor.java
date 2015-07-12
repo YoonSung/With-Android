@@ -58,48 +58,50 @@ public class TokenProcessor extends AbstractIntentService {
 
     private void sendRegIdAndPhoneNumberToServer(UserDTO dto) {
 
-        Callback<Response> tokenCallback = new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                preferenceUtil.sendTokenToServer().put(true);
-            }
-        };
-
         app.NETWORK.sendRegIdAndPhoneNumber(dto, new Callback<ResponseMessage>() {
             @Override
             public void success(ResponseMessage responseMessage, Response response) {
                 Log.d(TAG, "responseMessage : " + responseMessage.toString());
 
                 if (responseMessage.getCode() == Constant.NETWORK_RESPONSE_CODE_CREATION_NEW_DATA) {
-                    try {
-                        // Save authToken Received from server
-                        String tokenValue = getToken(response);
-                        preferenceUtil.authToken().put(tokenValue);
-
-                        // Save sendTokenFlag true
-                        preferenceUtil.sendTokenToServer().put(true);
-                    } catch (Exception e) {
-                        preferenceUtil.sendTokenToServer().put(false);
-                    }
+                    saveToken(response);
 
                 } else if (responseMessage.getCode() == Constant.NETWORK_RESPONSE_CODE_OK){
-
+                    saveToken(response);
                     // TODO Refactoring
                     StaticUtils.centerToast(getApplicationContext(), "Welcome Back!");
+                }
+                // Receive TODO Update Code
+                //} else if (responseMessage.getCode() == Constant.NETWORK)
+            }
+
+            private void saveToken(Response response) {
+                try {
+                    // Save authToken Received from server
+                    String tokenValue = getToken(response);
+                    preferenceUtil.authToken().put(tokenValue);
+
+                    // Save sendTokenFlag true
                     preferenceUtil.sendTokenToServer().put(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    preferenceUtil.sendTokenToServer().put(false);
                 }
             }
 
             private String getToken(Response response) throws Exception {
                 String cookieValue = null;
 
+                String key;
+                String value;
                 for(Header header : response.getHeaders()) {
-                    if (header.getValue().equalsIgnoreCase("Set-Cookie")) {
+                    key = header.getName();
+                    value = header.getValue();
+
+                    if (key == null)
+                        continue;
+
+                    if (key.equalsIgnoreCase("Set-Cookie")) {
                         cookieValue = header.getValue();
                         break;
                     } else {
@@ -107,6 +109,7 @@ public class TokenProcessor extends AbstractIntentService {
                     }
                 }
 
+                Log.i(TAG, "cookieValue : "+cookieValue);
                 String[] cookieEntries = cookieValue.split(";");
 
                 for (String cookieEntry : cookieEntries) {

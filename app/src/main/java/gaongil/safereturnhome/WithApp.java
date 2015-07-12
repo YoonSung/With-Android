@@ -1,6 +1,7 @@
 package gaongil.safereturnhome;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,9 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.androidannotations.annotations.EApplication;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import gaongil.safereturnhome.network.WithNetwork;
 import gaongil.safereturnhome.support.Constant;
+import gaongil.safereturnhome.support.PreferenceUtil_;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
@@ -22,6 +25,9 @@ public class WithApp extends Application {
 
     public static WithNetwork NETWORK;
     public static ObjectMapper ObjectMapper;
+
+    @Pref
+    PreferenceUtil_ preferenceUtil;
 
     @Override
     public void onCreate() {
@@ -44,7 +50,12 @@ public class WithApp extends Application {
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                request.addHeader("Cookies", "Retrofit-Sample-App");
+                SharedPreferences spf = getSharedPreferences("PreferenceUtil", MODE_PRIVATE);
+                String authToken = spf.getString("authToken", null);
+                //String authToken = preferenceUtil.authToken().getOr(null);
+
+                if (authToken != null)
+                    request.addHeader("Cookie", Constant.NETWORK_AUTH_COOKIE_NAME+"="+authToken);
             }
         };
 
