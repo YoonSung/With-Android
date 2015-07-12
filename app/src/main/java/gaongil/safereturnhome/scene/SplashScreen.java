@@ -126,19 +126,17 @@ public class SplashScreen extends Activity {
             Log.d(TAG, "phoneNumber -> "+phoneNumber);
             Log.d(TAG, "uuid -> "+uuid);
 
-            //1. Phone Number Check
+            // Phone Number Check
             if (!isValidPhoneNumber(phoneNumber))
                 centerToastAndFinish(getString(R.string.alert_absent_phone_number));
 
-            //TODO Refactoring.
-            if (isSendTokenToServer() == false) {
-                registerReceiver();
-                TokenProcessor_.intent(getApplication())
-                        .registerUserToServer(phoneNumber, uuid)
-                        .start();
-            }
+            // Request to Server
+            registerReceiver();
+            TokenProcessor_.intent(getApplication())
+                    .registerUserToServer(phoneNumber, uuid)
+                    .start();
 
-        } catch (WithNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             centerToastAndFinish(e.getMessage());
         }

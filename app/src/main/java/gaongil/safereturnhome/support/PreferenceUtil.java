@@ -1,14 +1,14 @@
 package gaongil.safereturnhome.support;
 
+import org.androidannotations.annotations.sharedpreferences.DefaultBoolean;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
 @SharedPref(value=SharedPref.Scope.UNIQUE)
 public interface PreferenceUtil {
 
-    //TODO DELETE ONE, BETWEEN TWO METHOD
+    @DefaultBoolean(false)
     boolean sendTokenToServer();
 
-    //TODO move to database
     String authToken();
 
     // Proper Profile Size to use custom image

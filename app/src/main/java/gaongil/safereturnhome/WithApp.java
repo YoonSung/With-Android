@@ -14,6 +14,7 @@ import gaongil.safereturnhome.network.WithNetwork;
 import gaongil.safereturnhome.support.Constant;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.converter.JacksonConverter;
 
 
 @EApplication
@@ -26,7 +27,20 @@ public class WithApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Network Set
+        // --- Jackson ObjectMapper
+        ObjectMapper = new ObjectMapper();
+        ObjectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        ObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+        ObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        ObjectMapper.getSerializationConfig().getDefaultVisibilityChecker()
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withCreatorVisibility(JsonAutoDetect.Visibility.NONE);
+
+
+        // --- Retrofit Network Set
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
@@ -38,21 +52,10 @@ public class WithApp extends Application {
                 .setEndpoint(Constant.NETWORK_ROOT_PATH)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setRequestInterceptor(requestInterceptor)
+                .setConverter(new JacksonConverter(ObjectMapper))
                 .build();
 
         NETWORK = NETWORK_ADAPTER.create(WithNetwork.class);
-
-        // Json Serializer
-        ObjectMapper = new ObjectMapper();
-        ObjectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        ObjectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
-        ObjectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        ObjectMapper.getSerializationConfig().getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withCreatorVisibility(JsonAutoDetect.Visibility.NONE);
     }
 
 }

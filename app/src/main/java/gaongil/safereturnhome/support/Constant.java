@@ -25,6 +25,8 @@ public class Constant {
 	public static final String PROJECT_ID = "342931063456";
 	
 	public static final String NETWORK_ROOT_PATH = "http://192.168.0.39:8080";
+	public static final String NETWORK_AUTH_COOKIE_NAME = "WITH_AUTH";
+
 	//public static final String NETWORK_ROOT_PATH = "http://10.73.43.227:8080";
 	public static final int  SPLASH_WAIT_TIME = 1000;
     //private static final String NETWORK_ROOT_PATH = "http://localhost:8080";
